@@ -59,7 +59,7 @@ Normalize the remaining numerical data: set it to have mean of 0 and standard de
 result_norm = result.apply(lambda x: (x - np.mean(x)) / np.std(x))
 # result_norm.to_csv('result-norm.tsv', sep="\t")
 
-frames = [result, grades]
+frames = [result_norm, grades]
 final_result = pd.concat(frames, axis=1, join="outer")
 
 final_result.to_csv('final-result.tsv', sep="\t")
