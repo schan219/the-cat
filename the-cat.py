@@ -7,7 +7,9 @@ SKLearn Preprocessing Normalize: Avg_Dt
 
 import numpy as np
 import pandas as pd
+import pydotplus 
 import os
+from sklearn import tree
 
 PERSON_COURSE_CLEANED = "../UBCx__Climate101x__3T2015_cleaned/person_course_cleaned.tsv"
 PERSON_COURSE_DAY_CLEANED = "../UBCx__Climate101x__3T2015_cleaned/person_course_day_cleaned.tsv"
@@ -57,6 +59,15 @@ Normalize the remaining numerical data: set it to have mean of 0 and standard de
 '''
 result_norm = result.apply(lambda x: (x - np.mean(x)) / np.std(x))
 result_norm.to_csv('result-norm.tsv', sep="\t")
+
+clf = tree.DecisionTreeClassifier(max_depth=5)
+clf = clf.fit(result, grades)
+dot_data = tree.export_graphviz(clf, out_file=None,feature_names=list(result),  
+                         class_names=['Pass','Fail'],  
+                         filled=True, rounded=True) 
+graph = pydotplus.graph_from_dot_data(dot_data) 
+graph.write_pdf("gradetree.pdf")
+
 
 #print(result[1,1])
 
