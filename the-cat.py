@@ -21,6 +21,7 @@ person_course_day_cleaned_df = pd.read_table(person_course_day_cleaned_path)
 
 result = user_df.join(person_course_day_cleaned_df, lsuffix='user_id', rsuffix='user_id')
 
+
 def get_grade_label(grade):
     '''
     Return 1 if course was completed (non-NA value), 0 otherwise.
@@ -44,7 +45,7 @@ For the numerical values, replace all the NA's with 0's
 '''
 result = result.fillna(0)
 
-result.to_csv('left-join.tsv', sep="\t")
+# result.to_csv('left-join.tsv', sep="\t")
 
 '''
 Since we don't want to normalize the grades, and want to use it as the labels instead, we store them separately 
@@ -56,7 +57,9 @@ result = result.drop(['grade'], axis=1)
 Normalize the remaining numerical data: set it to have mean of 0 and standard deviation of 1.
 '''
 result_norm = result.apply(lambda x: (x - np.mean(x)) / np.std(x))
-result_norm.to_csv('result-norm.tsv', sep="\t")
+# result_norm.to_csv('result-norm.tsv', sep="\t")
 
-#print(result[1,1])
+frames = [result, grades]
+final_result = pd.concat(frames, axis=1, join="outer")
 
+final_result.to_csv('final-result.tsv', sep="\t")
