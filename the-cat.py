@@ -23,8 +23,8 @@ def get_data(data_path1, data_path2, filename):
     person_course_cleaned_df = pd.read_table(person_course_cleaned_path)
     person_course_day_cleaned_df = pd.read_table(person_course_day_cleaned_path)
 
-    result = person_course_cleaned_df.join(person_course_day_cleaned_df, lsuffix='user_id', rsuffix='user_id')
-
+    #result = person_course_cleaned_df.join(person_course_day_cleaned_df, lsuffix='user_id', rsuffix='user_id')
+    result = pd.merge(person_course_cleaned_df, person_course_day_cleaned_df, on='user_id', how = 'inner')
     def get_grade_label(grade):
         '''
         Return 1 if course was completed (non-NA value), 0 otherwise.
@@ -53,7 +53,7 @@ def get_data(data_path1, data_path2, filename):
     Since we don't want to normalize the grades, and want to use it as the labels instead, we store them separately
     '''
     grades = result['grade']
-    result = result.drop(['grade'], axis=1)
+    result = result.drop(['grade', 'user_id'], axis=1)
 
     '''
     Normalize the remaining numerical data: set it to have mean of 0 and standard deviation of 1.
