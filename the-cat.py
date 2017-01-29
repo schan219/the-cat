@@ -35,15 +35,12 @@ def get_data(data_path1, data_path2, filename):
             return 0
 
     result['grade'] = result['grade'].map(get_grade_label)
-    #result_china['grade'] = result_china['grade'].map(get_grade_label)
 
     '''
     Dropping all the non-numerical values (for now)
     '''
     result = result.apply(pd.to_numeric, errors='coerce')
     result = result.dropna(axis=1, how='all')
-    #result_china = result_china.apply(pd.to_numeric, errors='coerce')
-    #result_china = result_china.dropna(axis=1, how='all')
 
     '''
     For the numerical values, replace all the NA's with 0's
@@ -62,10 +59,11 @@ def get_data(data_path1, data_path2, filename):
     Normalize the remaining numerical data: set it to have mean of 0 and standard deviation of 1.
     '''
     result_norm = result.apply(lambda x: (x - np.mean(x)) / np.std(x))
-    #result_norm.to_csv('result-norm.tsv', sep="\t")
+    # result_norm.to_csv('result-norm.tsv', sep="\t")
 
     frames = [result_norm, grades]
     final_result = pd.concat(frames, axis=1)
     final_result.to_csv(filename, sep="\t")
 
 get_data(PERSON_COURSE_CLEANED, PERSON_COURSE_DAY_CLEANED, 'final-result.tsv')
+get_data(PERSON_COURSE_CLEANED_CHINA, PERSON_COURSE_DAY_CLEANED_CHINA, 'final-result-china.tsv')
