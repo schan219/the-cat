@@ -5,6 +5,7 @@ Testing data: China
 SKLearn Preprocessing Normalize: Avg_Dt
 """
 
+import numpy as np
 import pandas as pd
 import os
 
@@ -44,6 +45,12 @@ For the numerical values, replace all the NA's with 0's
 result = result.fillna(0)
 
 result.to_csv('left-join.tsv', sep="\t")
+
+'''
+Since we don't want to normalize the grades, and want to use it as the labels instead, we store them separately 
+'''
+grades = result['grade']
+result = result.drop(['grade'], axis=1)
 
 '''
 Normalize the remaining numerical data: set it to have mean of 0 and standard deviation of 1.
