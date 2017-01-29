@@ -20,7 +20,6 @@ person_course_day_cleaned_df = pd.read_table(person_course_day_cleaned_path)
 
 result = user_df.join(person_course_day_cleaned_df, lsuffix='user_id', rsuffix='user_id')
 
-with open('left-join.csv', 'w') as csvfile:
-    a = csv.writer(csvfile)
-    a.writerows(result)
-    csvfile.close()
+print(result)
+
+result.to_csv('left-join.tsv', sep="\t")
